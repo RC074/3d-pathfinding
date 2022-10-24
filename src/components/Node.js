@@ -20,15 +20,18 @@ class Node extends React.Component {
 
   render() {
     return (
-      <mesh
-        position={this.props.position}
-        ref={this.ref}
-        onPointerOver={(event) => this.setState({ hovered: true })}
-        onPointerOut={(event) => this.setState({ hovered: false })}
-      >
-        <planeGeometry args={[1, 1, 1]} />
+      <mesh position={this.props.position} ref={this.ref}>
+        <planeGeometry args={[0.45, 0.45]} />
         <meshStandardMaterial
-          color={this.state.hovered ? "hotpink" : "orange"}
+          color={
+            this.props.isStart
+              ? "hotpink"
+              : this.props.isEnd
+              ? "blue"
+              : this.props.isVisited
+              ? "white"
+              : "orange"
+          }
         />
       </mesh>
     );
