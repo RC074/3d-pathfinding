@@ -5,8 +5,8 @@ import { dijsktra, shortestPath } from "./algorithms/dijsktra";
 
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
-const FINISH_NODE_ROW = 15;
-const FINISH_NODE_COL = 15;
+const FINISH_NODE_ROW = 29;
+const FINISH_NODE_COL = 25;
 
 class App extends React.Component {
   constructor(props) {
@@ -25,30 +25,20 @@ class App extends React.Component {
   animateDijkstra = () => {
     const visitedNodesInOrder = dijsktra(
       this.state.grid,
-      this.state.grid[4][4],
-      this.state.grid[15][15]
+      this.state.grid[START_NODE_ROW][START_NODE_COL],
+      this.state.grid[FINISH_NODE_ROW][FINISH_NODE_COL]
     );
     for (let i = 0; i < visitedNodesInOrder.length; i++) {
       console.log(visitedNodesInOrder[i].isVisited);
     }
     for (let i = 0; i < visitedNodesInOrder.length; i++) {
       setTimeout(() => {
-        // this.setState({
-        //   gridToRender: this.state.gridToRender.map((row) =>
-        //     row.map((node) => {
-        //       return node.col === visitedNodesInOrder[i].col &&
-        //         node.row === visitedNodesInOrder[i].row
-        //         ? visitedNodesInOrder[i]
-        //         : node;
-        //     })
-        //   ),
-        // });
         let temp = [...this.state.gridToRender];
 
         temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
           visitedNodesInOrder[i];
         this.setState({ gridToRender: temp });
-      }, 10 * i);
+      }, 20 * i);
     }
   };
 
@@ -60,7 +50,7 @@ class App extends React.Component {
         row.push({
           row: i,
           col: j,
-          isWall: false,
+          isWall: i === 10 && 1 < j ? true : false,
           distance: Infinity,
           isStart: i === START_NODE_ROW && j === START_NODE_COL,
           isEnd: i === FINISH_NODE_ROW && j === FINISH_NODE_COL,

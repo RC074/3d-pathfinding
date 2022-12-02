@@ -7,7 +7,6 @@ const Visualizer = ({ grid }) => {
   // const visualizeGrid = () => {
   //   return
   // };
-  console.log(grid);
   return (
     <Canvas>
       <CameraController />
@@ -15,13 +14,13 @@ const Visualizer = ({ grid }) => {
       <pointLight position={[-10, -10, -10]} />
       {grid.map((row) => {
         return row.map((node) => {
-          const { row, col, isStart, isEnd, isVisited, color } = node;
+          const { row, col, isStart, isEnd, isVisited, isWall } = node;
           return (
             <Node
               isStart={isStart}
               isEnd={isEnd}
               isVisited={isVisited}
-              color={color}
+              isWall={isWall}
               position={[-5 + col * 0.5, 5 - row * 0.5, 0]}
             />
           );
