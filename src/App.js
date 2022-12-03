@@ -2,6 +2,7 @@ import React from "react";
 import Visualizer from "./components/Visualizer";
 import Node from "./components/Node";
 import { dijsktra, shortestPath } from "./algorithms/dijsktra";
+import ControlPanel from "./components/ControlPanel";
 
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
@@ -17,20 +18,29 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() {}
+
+  handleStart = () => {
+    console.log(2);
     this.animateDijkstra();
+  };
+
+  handleSetWall = (row, col) => {
     console.log(1);
-  }
+    let temp = [...this.state.grid];
+    let temp2 = [...this.state.gridToRender];
+    temp[row][col].isWall = !temp[row][col].isWall;
+    temp2[row][col].isWall = !temp2[row][col].isWall;
+    this.setState({ grid: temp, gridToRender: temp2 });
+  };
 
   animateDijkstra = () => {
+    console.log("startanimation");
     const visitedNodesInOrder = dijsktra(
       this.state.grid,
       this.state.grid[START_NODE_ROW][START_NODE_COL],
       this.state.grid[FINISH_NODE_ROW][FINISH_NODE_COL]
     );
-    for (let i = 0; i < visitedNodesInOrder.length; i++) {
-      console.log(visitedNodesInOrder[i].isVisited);
-    }
     for (let i = 0; i < visitedNodesInOrder.length; i++) {
       setTimeout(() => {
         let temp = [...this.state.gridToRender];
@@ -38,6 +48,7 @@ class App extends React.Component {
         temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
           visitedNodesInOrder[i];
         this.setState({ gridToRender: temp });
+        console.log(10);
       }, 20 * i);
     }
   };
@@ -66,7 +77,11 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-        <Visualizer grid={this.state.gridToRender} />
+        <ControlPanel start={this.handleStart} />
+        <Visualizer
+          setWall={(row, col) => this.handleSetWall(row, col)}
+          grid={this.state.gridToRender}
+        />
       </div>
     );
   }

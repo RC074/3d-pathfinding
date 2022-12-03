@@ -17,7 +17,7 @@ class Node extends React.Component {
   }
 
   state = {
-    isWall: this.props.isWall,
+    // isWall: this.props.isWall,
     animateNode: false,
     animatedAlready: false,
   };
@@ -43,14 +43,19 @@ class Node extends React.Component {
       <mesh
         position={this.props.position}
         ref={this.ref}
-        onClick={(e) => this.setState({ isWall: !this.state.isWall })}
+        onClick={() => this.props.setWall(this.props.row, this.props.col)}
       >
-        <planeGeometry args={[0.47, 0.47]} />
-        {this.state.animateNode ? (
+        {!this.props.isWall ? (
+          <planeGeometry args={[0.47, 0.47]} />
+        ) : (
+          <boxGeometry args={[0.47, 0.47, 0.75]} />
+        )}
+
+        {this.state.animateNode && !this.props.isEnd && !this.props.isStart ? (
           <Spring
             from={{ color: "pink" }}
             to={{ color: "white" }}
-            config={{ duration: 700 }}
+            config={{ duration: 1000 }}
             onChange={(result) => this.func(result)}
           >
             {(styles) => (
@@ -77,7 +82,7 @@ class Node extends React.Component {
                 ? "hotpink"
                 : this.props.isEnd
                 ? "blue"
-                : this.state.isWall
+                : this.props.isWall
                 ? "green"
                 : this.props.isVisited
                 ? "white"

@@ -3,7 +3,7 @@ import Node from "./Node";
 import { Canvas } from "@react-three/fiber";
 import { CameraController } from "./CameraController";
 
-const Visualizer = ({ grid }) => {
+const Visualizer = ({ grid, setWall }) => {
   // const visualizeGrid = () => {
   //   return
   // };
@@ -17,10 +17,13 @@ const Visualizer = ({ grid }) => {
           const { row, col, isStart, isEnd, isVisited, isWall } = node;
           return (
             <Node
+              setWall={(row, col) => setWall(row, col)}
               isStart={isStart}
               isEnd={isEnd}
               isVisited={isVisited}
               isWall={isWall}
+              row={row}
+              col={col}
               position={[-5 + col * 0.5, 5 - row * 0.5, 0]}
             />
           );
