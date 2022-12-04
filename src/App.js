@@ -7,7 +7,7 @@ import ControlPanel from "./components/ControlPanel";
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
 const FINISH_NODE_ROW = 29;
-const FINISH_NODE_COL = 25;
+const FINISH_NODE_COL = 29;
 
 class App extends React.Component {
   constructor(props) {
@@ -26,7 +26,6 @@ class App extends React.Component {
   };
 
   handleSetWall = (row, col) => {
-    console.log(1);
     let temp = [...this.state.grid];
     let temp2 = [...this.state.gridToRender];
     temp[row][col].isWall = !temp[row][col].isWall;
@@ -41,15 +40,38 @@ class App extends React.Component {
       this.state.grid[START_NODE_ROW][START_NODE_COL],
       this.state.grid[FINISH_NODE_ROW][FINISH_NODE_COL]
     );
-    for (let i = 0; i < visitedNodesInOrder.length; i++) {
-      setTimeout(() => {
-        let temp = [...this.state.gridToRender];
+    const nodesInShortestPath = shortestPath(
+      this.state.grid[FINISH_NODE_ROW][FINISH_NODE_COL]
+    );
+    console.log(nodesInShortestPath);
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          for (let j = 0; j < nodesInShortestPath.length; j++) {
+            setTimeout(() => {
+              let temp = [...this.state.gridToRender];
 
-        temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
-          visitedNodesInOrder[i];
-        this.setState({ gridToRender: temp });
-        console.log(10);
-      }, 20 * i);
+              temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col] =
+                nodesInShortestPath[j];
+              temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col][
+                "partofPath"
+              ] = true;
+              console.log(
+                temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col]
+              );
+              this.setState({ gridToRender: temp });
+            }, 40 * j);
+          }
+        }, 21 * i);
+      } else {
+        setTimeout(() => {
+          let temp = [...this.state.gridToRender];
+
+          temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
+            visitedNodesInOrder[i];
+          this.setState({ gridToRender: temp });
+        }, 20 * i);
+      }
     }
   };
 
@@ -66,7 +88,8 @@ class App extends React.Component {
           isStart: i === START_NODE_ROW && j === START_NODE_COL,
           isEnd: i === FINISH_NODE_ROW && j === FINISH_NODE_COL,
           isVisited: false,
-          prev: null,
+          partofPath: false,
+          previousNode: null,
         });
       }
       grid.push(row);

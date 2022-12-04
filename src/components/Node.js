@@ -10,7 +10,11 @@ class Node extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.isVisited && this.props.isVisited) {
+    if (
+      (!prevProps.isVisited && this.props.isVisited) ||
+      (!prevProps.partofPath && this.props.partofPath)
+    ) {
+      console.log(102);
       this.setState({ animateNode: true });
       // console.log(1);
     }
@@ -19,7 +23,6 @@ class Node extends React.Component {
   state = {
     // isWall: this.props.isWall,
     animateNode: false,
-    animatedAlready: false,
   };
   // This reference gives us direct access to the THREE.Mesh object
   // this.ref = useRef();
@@ -48,13 +51,13 @@ class Node extends React.Component {
         {!this.props.isWall ? (
           <planeGeometry args={[0.47, 0.47]} />
         ) : (
-          <boxGeometry args={[0.47, 0.47, 0.75]} />
+          <boxGeometry args={[0.5, 0.5, 0.75]} />
         )}
 
         {this.state.animateNode && !this.props.isEnd && !this.props.isStart ? (
           <Spring
-            from={{ color: "pink" }}
-            to={{ color: "white" }}
+            from={{ color: this.props.animateFromColor }}
+            to={{ color: this.props.animateToColor }}
             config={{ duration: 1000 }}
             onChange={(result) => this.func(result)}
           >

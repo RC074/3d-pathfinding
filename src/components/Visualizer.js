@@ -14,7 +14,8 @@ const Visualizer = ({ grid, setWall }) => {
       <pointLight position={[-10, -10, -10]} />
       {grid.map((row) => {
         return row.map((node) => {
-          const { row, col, isStart, isEnd, isVisited, isWall } = node;
+          const { row, col, isStart, isEnd, isVisited, isWall, partofPath } =
+            node;
           return (
             <Node
               setWall={(row, col) => setWall(row, col)}
@@ -25,6 +26,9 @@ const Visualizer = ({ grid, setWall }) => {
               row={row}
               col={col}
               position={[-5 + col * 0.5, 5 - row * 0.5, 0]}
+              partofPath={partofPath}
+              animateFromColor="pink"
+              animateToColor={partofPath ? "yellow" : "white"}
             />
           );
         });
