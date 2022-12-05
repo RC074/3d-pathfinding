@@ -49,7 +49,7 @@ class Node extends React.Component {
         onClick={() => this.props.setWall(this.props.row, this.props.col)}
       >
         {!this.props.isWall ? (
-          <planeGeometry args={[0.47, 0.47]} />
+          <boxGeometry args={[0.47, 0.47, 0.01]} />
         ) : (
           <boxGeometry args={[0.5, 0.5, 0.75]} />
         )}
