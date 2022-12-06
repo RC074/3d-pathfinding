@@ -3,11 +3,12 @@ import Visualizer from "./components/Visualizer";
 import Node from "./components/Node";
 import { dijsktra, shortestPath } from "./algorithms/dijsktra";
 import ControlPanel from "./components/ControlPanel";
+import { Canvas } from "@react-three/fiber";
 
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
-const FINISH_NODE_ROW = 29;
-const FINISH_NODE_COL = 29;
+const FINISH_NODE_ROW = 11;
+const FINISH_NODE_COL = 20;
 
 class App extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class App extends React.Component {
     this.animateDijkstra();
   };
 
-  handleSetWall = (row, col) => {
+  handleSetWall = async (e, row, col) => {
     let temp = [...this.state.grid];
     let temp2 = [...this.state.gridToRender];
     temp[row][col].isWall = !temp[row][col].isWall;
@@ -101,10 +102,12 @@ class App extends React.Component {
     return (
       <div id="App">
         <ControlPanel start={this.handleStart} />
-        <Visualizer
-          setWall={(row, col) => this.handleSetWall(row, col)}
-          grid={this.state.gridToRender}
-        />
+        <Canvas>
+          <Visualizer
+            setWall={(e, row, col) => this.handleSetWall(e, row, col)}
+            grid={this.state.gridToRender}
+          />
+        </Canvas>
       </div>
     );
   }

@@ -1,6 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useThree } from "@react-three/fiber";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Spring, animated } from "@react-spring/three";
 
 class Node extends React.Component {
@@ -23,6 +21,7 @@ class Node extends React.Component {
   state = {
     // isWall: this.props.isWall,
     animateNode: false,
+    tileClicked: false,
   };
   // This reference gives us direct access to the THREE.Mesh object
   // this.ref = useRef();
@@ -31,7 +30,7 @@ class Node extends React.Component {
   // useFrame((state, delta) => (ref.current.rotation.x += delta));
   // Return the view, these are regular Threejs elements expressed in JSX
 
-  func = (result) => {
+  handleChange = (result) => {
     // console.log(result.finished);
     if (result.value) {
       if (result.value.color === "white") {
@@ -46,10 +45,13 @@ class Node extends React.Component {
       <mesh
         position={this.props.position}
         ref={this.ref}
-        onClick={() => this.props.setWall(this.props.row, this.props.col)}
+        onClick={(e) => (
+          e.stopPropagation(),
+          this.props.setWall(e, this.props.row, this.props.col)
+        )}
       >
         {!this.props.isWall ? (
-          <boxGeometry args={[0.47, 0.47, 0.01]} />
+          <planeGeometry args={[0.47, 0.47]} />
         ) : (
           <boxGeometry args={[0.5, 0.5, 0.75]} />
         )}
@@ -59,7 +61,7 @@ class Node extends React.Component {
             from={{ color: this.props.animateFromColor }}
             to={{ color: this.props.animateToColor }}
             config={{ duration: 1000 }}
-            onChange={(result) => this.func(result)}
+            onChange={(result) => this.handleChange(result)}
           >
             {(styles) => (
               <animated.meshStandardMaterial
