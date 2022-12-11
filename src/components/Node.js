@@ -12,7 +12,6 @@ class Node extends React.Component {
       (!prevProps.isVisited && this.props.isVisited) ||
       (!prevProps.partofPath && this.props.partofPath)
     ) {
-      console.log(102);
       this.setState({ animateNode: true });
       // console.log(1);
     }
@@ -33,8 +32,7 @@ class Node extends React.Component {
   handleChange = (result) => {
     // console.log(result.finished);
     if (result.value) {
-      if (result.value.color === "white") {
-        // console.log(10);
+      if (result.value.color === "pink" || result.value.color === "yellow") {
         this.setState({ animateNode: false });
       }
     }
@@ -89,8 +87,10 @@ class Node extends React.Component {
                 ? "blue"
                 : this.props.isWall
                 ? "green"
+                : this.props.partofPath
+                ? "yellow"
                 : this.props.isVisited
-                ? "white"
+                ? "pink"
                 : "orange"
             }
           />

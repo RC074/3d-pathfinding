@@ -17,8 +17,20 @@ body {
 }
 
 .ctrlPanel {
+  width: 100vw;
   position: absolute;
   z-index: 1;
+}
+
+.ctrlPanel ul {
+  display: flex;
+  list-style: none;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.ctrlPanel li {
+  /* width: 20%; */
 }
 
 .ctrlPanel button {

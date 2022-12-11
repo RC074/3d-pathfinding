@@ -8,6 +8,9 @@ export default class ControlPanel extends Component {
           <li>
             <button onClick={this.props.start}>start</button>
           </li>
+          <li>
+            <button onClick={this.props.start}>start</button>
+          </li>
         </ul>
       </div>
     );

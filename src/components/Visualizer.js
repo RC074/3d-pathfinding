@@ -23,8 +23,8 @@ const Visualizer = ({ grid, setWall }) => {
       camera.position.lerp(vec.set(0, 10, 10), 0.01);
       camera.updateProjectionMatrix();
     }
-    raycaster.setFromCamera(pointer, camera);
-    console.log(raycaster.intersectObjects(scene.children));
+    // raycaster.setFromCamera(pointer, camera);
+    // console.log(raycaster.intersectObjects(scene.children));
     return null;
   });
 
@@ -53,10 +53,10 @@ const Visualizer = ({ grid, setWall }) => {
                 isWall={isWall}
                 row={row}
                 col={col}
-                position={[-7 + col * 0.5, 7 - row * 0.5, 0]}
+                position={[-6 + col * 0.5, 6 - row * 0.5, 0]}
                 partofPath={partofPath}
-                animateFromColor="pink"
-                animateToColor={partofPath ? "yellow" : "white"}
+                animateFromColor="cyan"
+                animateToColor={partofPath ? "yellow" : "pink"}
               />
             );
           });
