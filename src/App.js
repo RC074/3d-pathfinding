@@ -8,10 +8,10 @@ import { shortestPath } from "./algorithms/helper";
 import ControlPanel from "./components/ControlPanel";
 import { Canvas } from "@react-three/fiber";
 
-const START_NODE_ROW = 4;
-const START_NODE_COL = 4;
-const FINISH_NODE_ROW = 14;
-const FINISH_NODE_COL = 14;
+const START_NODE_ROW = 5;
+const START_NODE_COL = 5;
+const FINISH_NODE_ROW = 20;
+const FINISH_NODE_COL = 20;
 
 class App extends React.Component {
   constructor(props) {
@@ -20,15 +20,26 @@ class App extends React.Component {
       grid: this.generateInitialGrid(),
       gridToRender: this.generateInitialGrid(),
       selectedPA: dijsktra,
+      selectedMA: recursiveDivisionMaze,
+      speed: "slow",
     };
   }
 
   componentDidMount() {}
 
-  handleStart = async () => {
-    await this.setState({
+  resetGrid = () => {
+    this.setState({
       grid: this.generateInitialGrid(),
+      gridToRender: this.generateInitialGrid(),
     });
+  };
+
+  handleStart = async () => {
+    this.animatePA();
+  };
+
+  handleMaze = () => {
+    const visitedNodesInOrder = [];
     recursiveDivisionMaze(
       this.state.grid,
       2,
@@ -37,12 +48,9 @@ class App extends React.Component {
       this.state.grid[0].length - 3,
       "horizontal",
       false,
-      []
+      visitedNodesInOrder
     );
-    await this.setState({
-      gridToRender: JSON.parse(JSON.stringify(this.state.grid)),
-    });
-    this.animateDijkstra();
+    this.animateNodesInOrder(visitedNodesInOrder);
   };
 
   handleSetWall = (e, row, col) => {
@@ -53,7 +61,49 @@ class App extends React.Component {
     this.setState({ grid: temp, gridToRender: temp2 });
   };
 
-  animateDijkstra = async () => {
+  animateSP = (nodesInShortestPath) => {
+    for (let j = 0; j < nodesInShortestPath.length; j++) {
+      setTimeout(() => {
+        let temp = [...this.state.gridToRender];
+
+        temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col] =
+          nodesInShortestPath[j];
+        temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col][
+          "partofPath"
+        ] = true;
+        this.setState({ gridToRender: temp });
+      }, 40 * j);
+    }
+  };
+
+  animateNodesInOrder = (visitedNodesInOrder, nodesInShortestPath = null) => {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length && nodesInShortestPath) {
+        setTimeout(() => {
+          this.animateSP(nodesInShortestPath);
+        }, this.convertSpeed() * i + 1000);
+      } else {
+        setTimeout(() => {
+          console.log("hi");
+          let temp = [...this.state.gridToRender];
+
+          temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
+            visitedNodesInOrder[i];
+          this.setState({ gridToRender: temp });
+        }, this.convertSpeed() * i);
+      }
+    }
+  };
+
+  convertSpeed = (maze = false) => {
+    return this.state.speed === "fast"
+      ? 20
+      : this.state.speed === "normal"
+      ? 80
+      : 200;
+  };
+
+  animatePA = async () => {
     console.log("startanimation");
 
     const visitedNodesInOrder = this.state.selectedPA(
@@ -71,33 +121,7 @@ class App extends React.Component {
       return;
     }
 
-    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-      if (i === visitedNodesInOrder.length) {
-        setTimeout(() => {
-          for (let j = 0; j < nodesInShortestPath.length; j++) {
-            setTimeout(() => {
-              let temp = [...this.state.gridToRender];
-
-              temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col] =
-                nodesInShortestPath[j];
-              temp[nodesInShortestPath[j].row][nodesInShortestPath[j].col][
-                "partofPath"
-              ] = true;
-              this.setState({ gridToRender: temp });
-            }, 40 * j);
-          }
-        }, 20 * i + 1000);
-      } else {
-        setTimeout(() => {
-          console.log("hi");
-          let temp = [...this.state.gridToRender];
-
-          temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
-            visitedNodesInOrder[i];
-          this.setState({ gridToRender: temp });
-        }, 20 * i);
-      }
-    }
+    this.animateNodesInOrder(visitedNodesInOrder, nodesInShortestPath);
   };
 
   generateInitialGrid = () => {
@@ -127,7 +151,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-        <ControlPanel start={this.handleStart} />
+        <ControlPanel start={this.handleStart} maze={this.handleMaze} />
         <Canvas>
           <Visualizer
             setWall={(e, row, col) => this.handleSetWall(e, row, col)}

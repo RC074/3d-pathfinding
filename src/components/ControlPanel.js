@@ -9,7 +9,7 @@ export default class ControlPanel extends Component {
             <button onClick={this.props.start}>start</button>
           </li>
           <li>
-            <button onClick={this.props.start}>start</button>
+            <button onClick={this.props.maze}>maze</button>
           </li>
         </ul>
       </div>

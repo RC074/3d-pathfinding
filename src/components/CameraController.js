@@ -7,7 +7,7 @@ export const CameraController = () => {
   const { camera, gl } = useThree();
 
   useEffect(() => {
-    camera.position.set(10, 20, 10);
+    camera.position.set(0, 20, 20);
     const controls = new OrbitControls(camera, gl.domElement);
 
     controls.minDistance = 1;
