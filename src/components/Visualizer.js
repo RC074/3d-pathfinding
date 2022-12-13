@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { CameraController } from "./CameraController";
 import { useSpring, Spring, animated } from "@react-spring/three";
 import * as THREE from "three";
+import { GridHelper, LineSegments } from "three";
 
 const Visualizer = ({ grid, setWall }) => {
   // const visualizeGrid = () => {
@@ -35,6 +36,7 @@ const Visualizer = ({ grid, setWall }) => {
 
   return (
     <mesh>
+      <gridHelper args={[12.5, 25, "orange", "orange"]} />
       <CameraController />
       <ambientLight intensity={0.5} />
       <pointLight position={[-10, -10, -10]} />

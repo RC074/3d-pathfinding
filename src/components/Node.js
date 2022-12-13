@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Spring, animated } from "@react-spring/three";
+import * as THREE from "three";
 
 class Node extends React.Component {
   constructor(props) {
@@ -36,6 +37,20 @@ class Node extends React.Component {
         this.setState({ animateNode: false });
       }
     }
+  };
+
+  determineColor = () => {
+    return this.props.isStart
+      ? "hotpink"
+      : this.props.isEnd
+      ? "blue"
+      : this.props.isWall
+      ? "green"
+      : this.props.partofPath
+      ? "yellow"
+      : this.props.isVisited
+      ? "pink"
+      : "orange";
   };
 
   render() {
@@ -80,19 +95,9 @@ class Node extends React.Component {
           </Spring>
         ) : (
           <animated.meshStandardMaterial
-            color={
-              this.props.isStart
-                ? "hotpink"
-                : this.props.isEnd
-                ? "blue"
-                : this.props.isWall
-                ? "green"
-                : this.props.partofPath
-                ? "yellow"
-                : this.props.isVisited
-                ? "pink"
-                : "orange"
-            }
+            transparent={true}
+            opacity={this.determineColor() === "orange" ? 0 : 1}
+            color={this.determineColor()}
           />
         )}
       </mesh>

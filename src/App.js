@@ -7,6 +7,7 @@ import { recursiveDivisionMaze } from "./algorithms/maze";
 import { shortestPath } from "./algorithms/helper";
 import ControlPanel from "./components/ControlPanel";
 import { Canvas } from "@react-three/fiber";
+import { GridHelper } from "three";
 
 const START_NODE_ROW = 5;
 const START_NODE_COL = 5;
@@ -19,9 +20,9 @@ class App extends React.Component {
     this.state = {
       grid: this.generateInitialGrid(),
       gridToRender: this.generateInitialGrid(),
-      selectedPA: dijsktra,
+      selectedPA: aStar,
       selectedMA: recursiveDivisionMaze,
-      speed: "slow",
+      speed: "fast",
     };
   }
 
