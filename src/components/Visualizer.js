@@ -39,7 +39,7 @@ const Visualizer = ({ grid, setWall }) => {
       <gridHelper args={[12.5, 25, "orange", "orange"]} />
       <CameraController />
       <ambientLight intensity={0.5} />
-      {/* <pointLight position={[10, 10, 10]} /> */}
+      <pointLight position={[10, 10, -10]} />
       <primitive object={new THREE.AxesHelper(10)} />
       <mesh ref={markRef} rotation={[-Math.PI / 2, 0, 0]}>
         {grid.map((row) => {
