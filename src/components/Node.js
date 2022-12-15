@@ -14,14 +14,18 @@ class Node extends React.Component {
       (!prevProps.partofPath && this.props.partofPath)
     ) {
       this.setState({ animateNode: true });
-      // console.log(1);
+      console.log(1);
+    }
+    if (!prevProps.isWall && this.props.isWall && this.state.z === 0.25) {
+      this.setState({ animateWall: true, z: 0 });
     }
   }
 
   state = {
     // isWall: this.props.isWall,
     animateNode: false,
-    tileClicked: false,
+    animateWall: false,
+    z: 0.25,
   };
   // This reference gives us direct access to the THREE.Mesh object
   // this.ref = useRef();
@@ -39,13 +43,21 @@ class Node extends React.Component {
     }
   };
 
+  handleChangeWall = (result) => {
+    // console.log(result);
+    this.setState({ z: result.value.z });
+    if (result.value.z === 0.25) {
+      this.setState({ animateWall: false });
+    }
+  };
+
   determineColor = () => {
     return this.props.isStart
       ? "hotpink"
       : this.props.isEnd
       ? "blue"
       : this.props.isWall
-      ? "green"
+      ? "grey"
       : this.props.partofPath
       ? "yellow"
       : this.props.isVisited
@@ -65,8 +77,19 @@ class Node extends React.Component {
       >
         {!this.props.isWall ? (
           <planeGeometry args={[0.47, 0.47]} />
+        ) : this.state.animateWall ? (
+          <Spring
+            from={{ z: 0 }}
+            to={{ z: 0.25 }}
+            config={{ duration: 500 }}
+            onChange={(result) => this.handleChangeWall(result)}
+          >
+            {(styles) => (
+              <animated.boxGeometry args={[0.5, 0.5, this.state.z]} />
+            )}
+          </Spring>
         ) : (
-          <boxGeometry args={[0.5, 0.5, 0.75]} />
+          <boxGeometry args={[0.5, 0.5, 0.25]} />
         )}
 
         {this.state.animateNode && !this.props.isEnd && !this.props.isStart ? (
@@ -77,7 +100,7 @@ class Node extends React.Component {
             onChange={(result) => this.handleChange(result)}
           >
             {(styles) => (
-              <animated.meshStandardMaterial
+              <animated.meshPhongMaterial
                 // color={
                 //   this.props.isStart
                 //     ? "hotpink"
@@ -94,7 +117,7 @@ class Node extends React.Component {
             )}
           </Spring>
         ) : (
-          <animated.meshStandardMaterial
+          <meshStandardMaterial
             transparent={true}
             opacity={this.determineColor() === "orange" ? 0 : 1}
             color={this.determineColor()}

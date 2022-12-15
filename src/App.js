@@ -20,7 +20,7 @@ class App extends React.Component {
     this.state = {
       grid: this.generateInitialGrid(),
       gridToRender: this.generateInitialGrid(),
-      selectedPA: aStar,
+      selectedPA: dijsktra,
       selectedMA: recursiveDivisionMaze,
       speed: "fast",
     };
@@ -28,11 +28,43 @@ class App extends React.Component {
 
   componentDidMount() {}
 
+  clearPath = () => {
+    let temp = JSON.parse(JSON.stringify(this.state.grid));
+    let temp2 = JSON.parse(JSON.stringify(this.state.gridToRender));
+    for (let i = 0; i < this.state.grid.length; i++) {
+      for (let j = 0; j < this.state.grid.length; j++) {
+        if (!temp[i][j].isWall) {
+          temp[i][j].isVisited = false;
+          temp2[i][j].isVisited = false;
+          temp[i][j].partofPath = false;
+          temp2[i][j].partofPath = false;
+          temp[i][j].distance = Infinity;
+          temp2[i][j].distance = Infinity;
+          temp[i][j].f = Infinity;
+          temp2[i][j].f = Infinity;
+          temp[i][j].previousNode = null;
+          temp2[i][j].previousNode = null;
+        }
+        // console.log(i === START_NODE_ROW && j === START_NODE_COL);
+      }
+    }
+    this.setState({ grid: temp, gridToRender: temp2 });
+    // this.setState({ grid: [...temp], gridToRender: [...temp] });
+  };
+
   resetGrid = () => {
     this.setState({
       grid: this.generateInitialGrid(),
       gridToRender: this.generateInitialGrid(),
     });
+  };
+
+  handleSetPA = (name) => {
+    if (name === "A* Star") {
+      this.setState({ selectedPA: aStar });
+    } else {
+      this.setState({ selectedPA: dijsktra });
+    }
   };
 
   handleStart = async () => {
@@ -85,7 +117,6 @@ class App extends React.Component {
         }, this.convertSpeed() * i + 1000);
       } else {
         setTimeout(() => {
-          console.log("hi");
           let temp = [...this.state.gridToRender];
 
           temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
@@ -96,9 +127,9 @@ class App extends React.Component {
     }
   };
 
-  convertSpeed = (maze = false) => {
+  convertSpeed = () => {
     return this.state.speed === "fast"
-      ? 20
+      ? 10
       : this.state.speed === "normal"
       ? 80
       : 200;
@@ -112,6 +143,7 @@ class App extends React.Component {
       this.state.grid[START_NODE_ROW][START_NODE_COL],
       this.state.grid[FINISH_NODE_ROW][FINISH_NODE_COL]
     );
+
     const nodesInShortestPath = shortestPath(
       this.state.grid[FINISH_NODE_ROW][FINISH_NODE_COL]
     );
@@ -152,7 +184,13 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-        <ControlPanel start={this.handleStart} maze={this.handleMaze} />
+        <ControlPanel
+          resetGrid={this.resetGrid}
+          clearPath={this.clearPath}
+          setPA={(name) => this.handleSetPA(name)}
+          start={this.handleStart}
+          maze={this.handleMaze}
+        />
         <Canvas>
           <Visualizer
             setWall={(e, row, col) => this.handleSetWall(e, row, col)}
