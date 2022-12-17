@@ -14,7 +14,6 @@ class Node extends React.Component {
       (!prevProps.partofPath && this.props.partofPath)
     ) {
       this.setState({ animateNode: true });
-      console.log(1);
     }
     if (!prevProps.isWall && this.props.isWall && this.state.z === 0.25) {
       this.setState({ animateWall: true, z: 0 });
@@ -119,7 +118,7 @@ class Node extends React.Component {
         ) : (
           <meshStandardMaterial
             transparent={true}
-            opacity={this.determineColor() === "orange" ? 0 : 1}
+            opacity={this.determineColor() === "orange" ? 1 : 1}
             color={this.determineColor()}
           />
         )}

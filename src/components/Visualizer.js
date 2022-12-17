@@ -39,7 +39,7 @@ const Visualizer = ({ grid, setWall }) => {
       <gridHelper args={[12.5, 25, "orange", "orange"]} />
       <CameraController />
       <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, -10]} />
+      {/* <pointLight position={[10, 10, -10]} /> */}
       <primitive object={new THREE.AxesHelper(10)} />
       <mesh ref={markRef} rotation={[-Math.PI / 2, 0, 0]}>
         {grid.map((row) => {
@@ -57,7 +57,7 @@ const Visualizer = ({ grid, setWall }) => {
                 col={col}
                 position={[-6 + col * 0.5, 6 - row * 0.5, isWall ? 0.125 : 0]}
                 partofPath={partofPath}
-                animateFromColor="cyan"
+                animateFromColor="lightblue"
                 animateToColor={partofPath ? "yellow" : "pink"}
               />
             );

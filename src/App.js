@@ -23,40 +23,43 @@ class App extends React.Component {
       selectedPA: dijsktra,
       selectedMA: recursiveDivisionMaze,
       speed: "fast",
+      animationInProcess: false,
     };
   }
 
   componentDidMount() {}
 
   clearPath = () => {
-    let temp = JSON.parse(JSON.stringify(this.state.grid));
-    let temp2 = JSON.parse(JSON.stringify(this.state.gridToRender));
-    for (let i = 0; i < this.state.grid.length; i++) {
-      for (let j = 0; j < this.state.grid.length; j++) {
-        if (!temp[i][j].isWall) {
-          temp[i][j].isVisited = false;
-          temp2[i][j].isVisited = false;
-          temp[i][j].partofPath = false;
-          temp2[i][j].partofPath = false;
-          temp[i][j].distance = Infinity;
-          temp2[i][j].distance = Infinity;
-          temp[i][j].f = Infinity;
-          temp2[i][j].f = Infinity;
-          temp[i][j].previousNode = null;
-          temp2[i][j].previousNode = null;
+    if (!this.state.animationInProcess) {
+      let temp = JSON.parse(JSON.stringify(this.state.grid));
+      let temp2 = JSON.parse(JSON.stringify(this.state.gridToRender));
+      for (let i = 0; i < this.state.grid.length; i++) {
+        for (let j = 0; j < this.state.grid.length; j++) {
+          if (!temp[i][j].isWall) {
+            temp[i][j].isVisited = false;
+            temp2[i][j].isVisited = false;
+            temp[i][j].partofPath = false;
+            temp2[i][j].partofPath = false;
+            temp[i][j].distance = Infinity;
+            temp2[i][j].distance = Infinity;
+            temp[i][j].f = Infinity;
+            temp2[i][j].f = Infinity;
+            temp[i][j].previousNode = null;
+            temp2[i][j].previousNode = null;
+          }
         }
-        // console.log(i === START_NODE_ROW && j === START_NODE_COL);
       }
+      this.setState({ grid: temp, gridToRender: temp2 });
     }
-    this.setState({ grid: temp, gridToRender: temp2 });
-    // this.setState({ grid: [...temp], gridToRender: [...temp] });
   };
 
   resetGrid = () => {
-    this.setState({
-      grid: this.generateInitialGrid(),
-      gridToRender: this.generateInitialGrid(),
-    });
+    if (!this.state.animationInProcess) {
+      this.setState({
+        grid: this.generateInitialGrid(),
+        gridToRender: this.generateInitialGrid(),
+      });
+    }
   };
 
   handleSetPA = (name) => {
@@ -68,22 +71,28 @@ class App extends React.Component {
   };
 
   handleStart = async () => {
-    this.animatePA();
+    if (!this.state.animationInProcess) {
+      this.clearPath();
+      this.animatePA();
+    }
   };
 
   handleMaze = () => {
-    const visitedNodesInOrder = [];
-    recursiveDivisionMaze(
-      this.state.grid,
-      2,
-      this.state.grid.length - 3,
-      2,
-      this.state.grid[0].length - 3,
-      "horizontal",
-      false,
-      visitedNodesInOrder
-    );
-    this.animateNodesInOrder(visitedNodesInOrder);
+    if (!this.state.animationInProcess) {
+      this.resetGrid();
+      const visitedNodesInOrder = [];
+      recursiveDivisionMaze(
+        this.state.grid,
+        2,
+        this.state.grid.length - 3,
+        2,
+        this.state.grid[0].length - 3,
+        "horizontal",
+        false,
+        visitedNodesInOrder
+      );
+      this.animateNodesInOrder(visitedNodesInOrder);
+    }
   };
 
   handleSetWall = (e, row, col) => {
@@ -110,6 +119,12 @@ class App extends React.Component {
   };
 
   animateNodesInOrder = (visitedNodesInOrder, nodesInShortestPath = null) => {
+    this.setState({ animationInProcess: true });
+    setTimeout(() => {
+      this.setState({ animationInProcess: false });
+      console.log("done");
+    }, this.convertSpeed() * visitedNodesInOrder.length + 1000);
+
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length && nodesInShortestPath) {
         setTimeout(() => {
