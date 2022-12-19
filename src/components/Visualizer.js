@@ -57,8 +57,8 @@ const Visualizer = ({ grid, setWall }) => {
                 col={col}
                 position={[-6 + col * 0.5, 6 - row * 0.5, isWall ? 0.125 : 0]}
                 partofPath={partofPath}
-                animateFromColor="lightblue"
-                animateToColor={partofPath ? "yellow" : "pink"}
+                animateFromColor="pink"
+                animateToColor={partofPath ? "yellow" : "lightblue"}
               />
             );
           });

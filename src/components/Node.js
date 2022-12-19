@@ -36,7 +36,10 @@ class Node extends React.Component {
   handleChange = (result) => {
     // console.log(result.finished);
     if (result.value) {
-      if (result.value.color === "pink" || result.value.color === "yellow") {
+      if (
+        result.value.color === "lightblue" ||
+        result.value.color === "yellow"
+      ) {
         this.setState({ animateNode: false });
       }
     }
@@ -60,7 +63,7 @@ class Node extends React.Component {
       : this.props.partofPath
       ? "yellow"
       : this.props.isVisited
-      ? "pink"
+      ? "lightblue"
       : "orange";
   };
 
@@ -118,7 +121,7 @@ class Node extends React.Component {
         ) : (
           <meshStandardMaterial
             transparent={true}
-            opacity={this.determineColor() === "orange" ? 1 : 1}
+            opacity={this.determineColor() === "orange" ? 0 : 1}
             color={this.determineColor()}
           />
         )}

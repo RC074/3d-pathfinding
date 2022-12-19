@@ -1,13 +1,11 @@
 import React from "react";
 import Visualizer from "./components/Visualizer";
-import Node from "./components/Node";
 import { dijsktra } from "./algorithms/dijsktra";
 import { aStar } from "./algorithms/aStar";
 import { recursiveDivisionMaze } from "./algorithms/maze";
 import { shortestPath } from "./algorithms/helper";
 import ControlPanel from "./components/ControlPanel";
 import { Canvas } from "@react-three/fiber";
-import { GridHelper } from "three";
 
 const START_NODE_ROW = 5;
 const START_NODE_COL = 5;
@@ -77,9 +75,9 @@ class App extends React.Component {
     }
   };
 
-  handleMaze = () => {
+  handleMaze = async () => {
     if (!this.state.animationInProcess) {
-      this.resetGrid();
+      await this.resetGrid();
       const visitedNodesInOrder = [];
       recursiveDivisionMaze(
         this.state.grid,
@@ -120,10 +118,17 @@ class App extends React.Component {
 
   animateNodesInOrder = (visitedNodesInOrder, nodesInShortestPath = null) => {
     this.setState({ animationInProcess: true });
-    setTimeout(() => {
-      this.setState({ animationInProcess: false });
-      console.log("done");
-    }, this.convertSpeed() * visitedNodesInOrder.length + 1000);
+    setTimeout(
+      () => {
+        this.setState({ animationInProcess: false });
+        console.log("done");
+      },
+      nodesInShortestPath === null
+        ? this.convertSpeed(true) * visitedNodesInOrder.length
+        : this.convertSpeed() * visitedNodesInOrder.length +
+            1000 +
+            nodesInShortestPath.length * 40
+    );
 
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length && nodesInShortestPath) {
@@ -142,12 +147,16 @@ class App extends React.Component {
     }
   };
 
-  convertSpeed = () => {
-    return this.state.speed === "fast"
-      ? 10
-      : this.state.speed === "normal"
-      ? 80
-      : 200;
+  convertSpeed = (maze = false) => {
+    if (maze) {
+      return 10;
+    } else {
+      return this.state.speed === "fast"
+        ? 10
+        : this.state.speed === "normal"
+        ? 80
+        : 200;
+    }
   };
 
   animatePA = async () => {
