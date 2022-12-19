@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Node from "./Node";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { CameraController } from "./CameraController";
-import { useSpring, Spring, animated } from "@react-spring/three";
 import * as THREE from "three";
-import { GridHelper, LineSegments } from "three";
 
 const Visualizer = ({ grid, setWall }) => {
   // const visualizeGrid = () => {
@@ -14,7 +12,6 @@ const Visualizer = ({ grid, setWall }) => {
   const [resetCamera, setResetCamera] = useState(true);
 
   const vec = new THREE.Vector3();
-  const raycaster = new THREE.Raycaster();
   const markRef = useRef();
 
   useFrame(({ camera, pointer, scene }) => {
@@ -40,7 +37,7 @@ const Visualizer = ({ grid, setWall }) => {
       <CameraController />
       <ambientLight intensity={0.5} />
       {/* <pointLight position={[10, 10, -10]} /> */}
-      <primitive object={new THREE.AxesHelper(10)} />
+      {/* <primitive object={new THREE.AxesHelper(10)} /> */}
       <mesh ref={markRef} rotation={[-Math.PI / 2, 0, 0]}>
         {grid.map((row) => {
           return row.map((node) => {
