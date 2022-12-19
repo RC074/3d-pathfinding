@@ -1,5 +1,14 @@
 # Getting Started with Create React App
 
+## Published at https://rc074.github.io/3d-pathfinding/
+
+### 3d webgl app that demonstrates different types of pathfinding algorithms [in-progress]
+
+## snapshot
+![image](https://user-images.githubusercontent.com/63427503/208349294-1e94675e-f8d2-4fa8-ac65-0aea5a2b6a81.png)
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
