@@ -4,12 +4,15 @@ import { Dropdown } from "react-bootstrap";
 export default class ControlPanel extends Component {
   state = {
     namePA: "Dijsktra",
+    speed: "fast",
   };
 
   handleChoosePA = (name) => {
     this.setState({ namePA: name });
     this.props.setPA(name);
   };
+
+  handleChangeSpeed = () => {};
 
   render() {
     return (
@@ -44,6 +47,24 @@ export default class ControlPanel extends Component {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+          </li>
+          <li>
+            <button
+              className="btn1"
+              id="speedControl"
+              onClick={this.props.switchSpeed}
+              style={{
+                backgroundColor:
+                  this.props.speed === "fast"
+                    ? "hotpink"
+                    : this.props.speed === "medium"
+                    ? "blue"
+                    : "green",
+                color: "black",
+              }}
+            >
+              {this.props.speed}
+            </button>
           </li>
           <li>
             <button className="btn1" onClick={this.props.start}>

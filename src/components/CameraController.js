@@ -14,6 +14,8 @@ export const CameraController = () => {
     controls.minDistance = 1;
     // controls.maxDistance = 15;
 
+    controls.maxPolarAngle = 1.5;
+
     return () => {
       controls.dispose();
     };

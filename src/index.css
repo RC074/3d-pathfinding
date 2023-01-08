@@ -13,11 +13,11 @@ body,
 }
 
 body {
-  background: #181919;
+  background: #0f1010;
 }
 
 .ctrlPanel {
-  width: 50vw;
+  width: 60vw;
   position: absolute;
   z-index: 1;
 }
@@ -31,7 +31,17 @@ body {
 }
 
 .ctrlPanel li {
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#speedControl {
+  width: 7vw;
+  border: none;
+  border-radius: 5px;
+  margin-top: 3.3px;
+  font-weight: 900;
+  font-size: 20px;
 }
 
 #dropdown-button {

@@ -6,9 +6,10 @@ import { recursiveDivisionMaze } from "./algorithms/maze";
 import { shortestPath } from "./algorithms/helper";
 import ControlPanel from "./components/ControlPanel";
 import { Canvas } from "@react-three/fiber";
+import FPSStats from "react-fps-stats";
 
-const START_NODE_ROW = 5;
-const START_NODE_COL = 5;
+const START_NODE_ROW = 4;
+const START_NODE_COL = 4;
 const FINISH_NODE_ROW = 20;
 const FINISH_NODE_COL = 20;
 
@@ -51,6 +52,16 @@ class App extends React.Component {
     }
   };
 
+  handleSwitchSpeed = () => {
+    if (this.state.speed === "fast") {
+      this.setState({ speed: "medium" });
+    } else if (this.state.speed === "medium") {
+      this.setState({ speed: "slow" });
+    } else {
+      this.setState({ speed: "fast" });
+    }
+  };
+
   resetGrid = () => {
     if (!this.state.animationInProcess) {
       this.setState({
@@ -79,6 +90,7 @@ class App extends React.Component {
     if (!this.state.animationInProcess) {
       await this.resetGrid();
       const visitedNodesInOrder = [];
+
       recursiveDivisionMaze(
         this.state.grid,
         2,
@@ -136,13 +148,18 @@ class App extends React.Component {
           this.animateSP(nodesInShortestPath);
         }, this.convertSpeed() * i + 1000);
       } else {
-        setTimeout(() => {
-          let temp = [...this.state.gridToRender];
+        setTimeout(
+          () => {
+            let temp = [...this.state.gridToRender];
 
-          temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
-            visitedNodesInOrder[i];
-          this.setState({ gridToRender: temp });
-        }, this.convertSpeed() * i);
+            temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
+              visitedNodesInOrder[i];
+            this.setState({ gridToRender: temp });
+          },
+          nodesInShortestPath === null
+            ? this.convertSpeed(true) * i
+            : this.convertSpeed() * i
+        );
       }
     }
   };
@@ -153,7 +170,7 @@ class App extends React.Component {
     } else {
       return this.state.speed === "fast"
         ? 10
-        : this.state.speed === "normal"
+        : this.state.speed === "medium"
         ? 80
         : 200;
     }
@@ -208,7 +225,10 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
+        <FPSStats bottom={10} left={10} top={"auto"} />
         <ControlPanel
+          switchSpeed={this.handleSwitchSpeed}
+          speed={this.state.speed}
           resetGrid={this.resetGrid}
           clearPath={this.clearPath}
           setPA={(name) => this.handleSetPA(name)}

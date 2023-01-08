@@ -59,7 +59,7 @@ class Node extends React.Component {
       : this.props.isEnd
       ? "blue"
       : this.props.isWall
-      ? "grey"
+      ? "black"
       : this.props.partofPath
       ? "yellow"
       : this.props.isVisited
@@ -78,7 +78,7 @@ class Node extends React.Component {
         )}
       >
         {!this.props.isWall ? (
-          <planeGeometry args={[0.47, 0.47]} />
+          <planeGeometry args={[0.45, 0.45]} />
         ) : this.state.animateWall ? (
           <Spring
             from={{ z: 0 }}
@@ -121,7 +121,7 @@ class Node extends React.Component {
         ) : (
           <meshStandardMaterial
             transparent={true}
-            opacity={this.determineColor() === "orange" ? 0 : 1}
+            opacity={this.determineColor() === "orange" ? 1 : 1}
             color={this.determineColor()}
           />
         )}

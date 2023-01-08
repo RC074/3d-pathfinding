@@ -33,7 +33,7 @@ const Visualizer = ({ grid, setWall }) => {
 
   return (
     <mesh>
-      <gridHelper args={[12.5, 25, "orange", "orange"]} />
+      {/* <gridHelper args={[12.5, 25, "orange", "orange"]} /> */}
       <CameraController />
       <ambientLight intensity={0.5} />
       {/* <pointLight position={[10, 10, -10]} /> */}
