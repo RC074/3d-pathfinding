@@ -7,6 +7,7 @@ import { shortestPath } from "./algorithms/helper";
 import ControlPanel from "./components/ControlPanel";
 import { Canvas } from "@react-three/fiber";
 import FPSStats from "react-fps-stats";
+import { ToastContainer, toast } from "react-toastify";
 
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
@@ -49,6 +50,17 @@ class App extends React.Component {
         }
       }
       this.setState({ grid: temp, gridToRender: temp2 });
+    } else {
+      toast.warn("Animation In Progress", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
@@ -68,6 +80,17 @@ class App extends React.Component {
         grid: this.generateInitialGrid(),
         gridToRender: this.generateInitialGrid(),
       });
+    } else {
+      toast.warn("Animation In Progress", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
@@ -83,6 +106,17 @@ class App extends React.Component {
     if (!this.state.animationInProcess) {
       this.clearPath();
       this.animatePA();
+    } else {
+      toast.warn("Animation In Progress", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
@@ -102,15 +136,28 @@ class App extends React.Component {
         visitedNodesInOrder
       );
       this.animateNodesInOrder(visitedNodesInOrder);
+    } else {
+      toast.warn("Animation In Progress", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
   handleSetWall = (e, row, col) => {
-    let temp = [...this.state.grid];
-    let temp2 = [...this.state.gridToRender];
-    temp[row][col].isWall = !temp[row][col].isWall;
-    temp2[row][col].isWall = !temp2[row][col].isWall;
-    this.setState({ grid: temp, gridToRender: temp2 });
+    if (!this.state.animationInProcess) {
+      let temp = [...this.state.grid];
+      let temp2 = [...this.state.gridToRender];
+      temp[row][col].isWall = !temp[row][col].isWall;
+      temp2[row][col].isWall = !temp2[row][col].isWall;
+      this.setState({ grid: temp, gridToRender: temp2 });
+    }
   };
 
   animateSP = (nodesInShortestPath) => {
@@ -136,9 +183,9 @@ class App extends React.Component {
         console.log("done");
       },
       nodesInShortestPath === null
-        ? this.convertSpeed(true) * visitedNodesInOrder.length
+        ? this.convertSpeed(true) * visitedNodesInOrder.length + 500
         : this.convertSpeed() * visitedNodesInOrder.length +
-            1000 +
+            1500 +
             nodesInShortestPath.length * 40
     );
 
@@ -192,6 +239,17 @@ class App extends React.Component {
 
     if (nodesInShortestPath.length === 1) {
       console.log("no route");
+      this.clearPath();
+      toast.warn("No Route", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       return;
     }
 
@@ -225,6 +283,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
+        <ToastContainer />
         <FPSStats bottom={10} left={10} top={"auto"} />
         <ControlPanel
           switchSpeed={this.handleSwitchSpeed}
