@@ -18,7 +18,7 @@ const Visualizer = ({ grid, setWall }) => {
     if (resetCamera) {
       camera.lookAt(markRef.current.position);
       // console.log(camera.position);
-      camera.position.lerp(vec.set(0, 10, 0), 0.015);
+      camera.position.lerp(vec.set(0, 10, 0), 0.005);
       camera.updateProjectionMatrix();
     }
     // raycaster.setFromCamera(pointer, camera);
