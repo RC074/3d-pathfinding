@@ -58,8 +58,8 @@ export default class ControlPanel extends Component {
                   this.props.speed === "fast"
                     ? "hotpink"
                     : this.props.speed === "medium"
-                    ? "blue"
-                    : "green",
+                    ? "lightblue"
+                    : "lightgreen",
                 color: "black",
                 width: "120px",
               }}

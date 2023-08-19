@@ -17,7 +17,7 @@ body {
 }
 
 .ctrlPanel {
-  width: 60vw;
+  width: 100vw;
   position: absolute;
   z-index: 1;
 }
