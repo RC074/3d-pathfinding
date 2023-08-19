@@ -10,8 +10,9 @@ import FPSStats from "react-fps-stats";
 
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
-const FINISH_NODE_ROW = 20;
-const FINISH_NODE_COL = 20;
+const FINISH_NODE_ROW = 30;
+const FINISH_NODE_COL = 30;
+const PLAIN_SIZE = 35;
 
 class App extends React.Component {
   constructor(props) {
@@ -152,8 +153,10 @@ class App extends React.Component {
           () => {
             let temp = [...this.state.gridToRender];
 
-            temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
-              visitedNodesInOrder[i];
+            if (visitedNodesInOrder[i]) {
+              temp[visitedNodesInOrder[i].row][visitedNodesInOrder[i].col] =
+                visitedNodesInOrder[i];
+            }
             this.setState({ gridToRender: temp });
           },
           nodesInShortestPath === null
@@ -200,9 +203,9 @@ class App extends React.Component {
 
   generateInitialGrid = () => {
     let grid = [];
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < PLAIN_SIZE; i++) {
       let row = [];
-      for (let j = 0; j < 25; j++) {
+      for (let j = 0; j < PLAIN_SIZE; j++) {
         row.push({
           row: i,
           col: j,
@@ -225,7 +228,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-        <FPSStats bottom={10} left={10} top={"auto"} />
+        <FPSStats bottom={10} left={10} top={"auto"} graphWidth={100} />
         <ControlPanel
           switchSpeed={this.handleSwitchSpeed}
           speed={this.state.speed}
