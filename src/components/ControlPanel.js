@@ -25,22 +25,21 @@ export default class ControlPanel extends Component {
               </Dropdown.Toggle>
               <Dropdown.Menu
                 style={{
-                  background: "none",
+                  backgroundColor: "#0B6EFD",
                   marginTop: 0,
-                  borderColor: "#ffa260",
                   borderTop: "none",
                 }}
               >
                 <Dropdown.Item
                   onClick={() => this.handleChoosePA("Dijsktra")}
-                  style={{ color: "#ffa260" }}
+                  style={{ color: "black" }}
                   className="menuItem"
                 >
                   Dijsktra
                 </Dropdown.Item>
                 <Dropdown.Item
                   onClick={() => this.handleChoosePA("A* Star")}
-                  style={{ color: "#ffa260" }}
+                  style={{ color: "black" }}
                   className="menuItem"
                 >
                   A* star

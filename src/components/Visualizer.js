@@ -18,7 +18,7 @@ const Visualizer = ({ grid, setWall }) => {
     if (resetCamera) {
       camera.lookAt(markRef.current.position);
       // console.log(camera.position);
-      camera.position.lerp(vec.set(0, 10, 0), 0.03);
+      camera.position.lerp(vec.set(0, 20, 0), 0.03);
       camera.updateProjectionMatrix();
     }
     // raycaster.setFromCamera(pointer, camera);
@@ -53,8 +53,8 @@ const Visualizer = ({ grid, setWall }) => {
                 row={row}
                 col={col}
                 position={[
-                  -8.4 + col * 0.5,
-                  8.4 - row * 0.5,
+                  -13 + col * 1.05,
+                  12 - row * 1.05,
                   isWall ? 0.125 : 0,
                 ]}
                 partofPath={partofPath}

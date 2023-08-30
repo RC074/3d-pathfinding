@@ -64,7 +64,7 @@ class Node extends React.Component {
       ? "yellow"
       : this.props.isVisited
       ? "lightblue"
-      : "orange";
+      : "grey";
   };
 
   render() {
@@ -78,7 +78,7 @@ class Node extends React.Component {
         )}
       >
         {!this.props.isWall ? (
-          <planeGeometry args={[0.45, 0.45]} />
+          <planeGeometry args={[1, 1]} />
         ) : this.state.animateWall ? (
           <Spring
             from={{ z: 0 }}
@@ -86,12 +86,10 @@ class Node extends React.Component {
             config={{ duration: 500 }}
             onChange={(result) => this.handleChangeWall(result)}
           >
-            {(styles) => (
-              <animated.boxGeometry args={[0.5, 0.5, this.state.z]} />
-            )}
+            {(styles) => <animated.boxGeometry args={[1, 1, this.state.z]} />}
           </Spring>
         ) : (
-          <boxGeometry args={[0.5, 0.5, 0.25]} />
+          <boxGeometry args={[1, 1, 0.25]} />
         )}
 
         {this.state.animateNode && !this.props.isEnd && !this.props.isStart ? (
@@ -121,7 +119,7 @@ class Node extends React.Component {
         ) : (
           <meshStandardMaterial
             transparent={true}
-            opacity={this.determineColor() === "orange" ? 1 : 1}
+            opacity={this.determineColor() === "grey" ? 0.2 : 1}
             color={this.determineColor()}
           />
         )}

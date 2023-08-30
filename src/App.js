@@ -11,9 +11,9 @@ import { ToastContainer, toast } from "react-toastify";
 
 const START_NODE_ROW = 4;
 const START_NODE_COL = 4;
-const FINISH_NODE_ROW = 30;
-const FINISH_NODE_COL = 30;
-const PLAIN_SIZE = 35;
+const FINISH_NODE_ROW = 20;
+const FINISH_NODE_COL = 20;
+const PLAIN_SIZE = 25;
 
 class App extends React.Component {
   constructor(props) {
@@ -52,6 +52,7 @@ class App extends React.Component {
       }
       this.setState({ grid: temp, gridToRender: temp2 });
     } else {
+      console.log("hi");
       toast.warn("Animation In Progress", {
         position: "bottom-center",
         autoClose: 2000,
@@ -286,12 +287,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-<<<<<<< HEAD
         <FPSStats bottom={10} left={10} top={"auto"} graphWidth={100} />
-=======
-        <ToastContainer />
-        <FPSStats bottom={10} left={10} top={"auto"} />
->>>>>>> 9759ac62dbf7bd1fede3e9f885da3788dde70960
         <ControlPanel
           switchSpeed={this.handleSwitchSpeed}
           speed={this.state.speed}
@@ -307,6 +303,7 @@ class App extends React.Component {
             grid={this.state.gridToRender}
           />
         </Canvas>
+        <ToastContainer />
       </div>
     );
   }
