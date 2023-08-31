@@ -153,9 +153,16 @@ class App extends React.Component {
   };
 
   handleSetWall = (e, row, col) => {
-    if (!this.state.animationInProcess) {
-      let temp = [...this.state.grid];
-      let temp2 = [...this.state.gridToRender];
+    console.log("reach");
+    if (
+      !this.state.animationInProcess &&
+      !(START_NODE_COL === col && START_NODE_ROW === row) &&
+      !(FINISH_NODE_COL === col && FINISH_NODE_ROW === row)
+    ) {
+      // let temp = [...this.state.grid];
+      // let temp2 = [...this.state.gridToRender];
+      let temp = structuredClone(this.state.grid);
+      let temp2 = structuredClone(this.state.gridToRender);
       temp[row][col].isWall = !temp[row][col].isWall;
       temp2[row][col].isWall = !temp2[row][col].isWall;
       this.setState({ grid: temp, gridToRender: temp2 });
@@ -182,6 +189,10 @@ class App extends React.Component {
     setTimeout(
       () => {
         this.setState({ animationInProcess: false });
+        // if (nodesInShortestPath === null) {
+        //   // so that the walls can be interactive after maze is built (to be fixed)
+        //   this.clearPath();
+        // }
         console.log("done");
       },
       nodesInShortestPath === null
@@ -220,7 +231,7 @@ class App extends React.Component {
       return 10;
     } else {
       return this.state.speed === "fast"
-        ? 10
+        ? 20
         : this.state.speed === "medium"
         ? 80
         : 200;
@@ -257,6 +268,7 @@ class App extends React.Component {
       return;
     }
 
+    // if there is a path, animate the grid
     this.animateNodesInOrder(visitedNodesInOrder, nodesInShortestPath);
   };
 

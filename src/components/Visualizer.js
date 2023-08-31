@@ -30,7 +30,7 @@ const Visualizer = ({ grid, setWall }) => {
     window.addEventListener("mousewheel", () => setResetCamera(false));
     window.addEventListener("mousedown", () => setResetCamera(false));
   }, []);
-
+  console.log("rerender");
   return (
     <mesh>
       {/* <gridHelper args={[12.5, 25, "orange", "orange"]} /> */}
@@ -52,14 +52,10 @@ const Visualizer = ({ grid, setWall }) => {
                 isWall={isWall}
                 row={row}
                 col={col}
-                position={[
-                  -13 + col * 1.05,
-                  12 - row * 1.05,
-                  isWall ? 0.125 : 0,
-                ]}
+                position={[-13 + col * 1.05, 12 - row * 1.05, isWall ? 0.5 : 0]}
                 partofPath={partofPath}
-                animateFromColor="pink"
-                animateToColor={partofPath ? "yellow" : "lightblue"}
+                animateFromColor="#E566A4"
+                animateToColor={partofPath ? "yellow" : "#6be3e3"}
               />
             );
           });

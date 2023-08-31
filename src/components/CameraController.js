@@ -11,7 +11,7 @@ const effectController = {
   mieDirectionalG: 0.7,
   elevation: 5,
   azimuth: 179.5,
-  exposure: 0.9,
+  exposure: 0.5,
 };
 
 export const CameraController = () => {
@@ -22,10 +22,13 @@ export const CameraController = () => {
   sun = new THREE.Vector3();
 
   useEffect(() => {
-    scene.fog = new THREE.Fog(0xffffff, 0, 750);
-    scene.background = new THREE.Color(0xbbd6ff);
+    // scene.fog = new THREE.Fog(0xffffff, 0, 750);
+    // scene.background = new THREE.Color(0xbbd6ff);
     camera.position.set(0, 60, 20);
     const controls = new OrbitControls(camera, gl.domElement);
+    const light = new THREE.DirectionalLight(0xfff0dd, 1);
+    light.position.set(0, 10, -10);
+    scene.add(light);
 
     controls.minDistance = 1;
     // controls.maxDistance = 15;

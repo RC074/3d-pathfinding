@@ -15,7 +15,7 @@ class Node extends React.Component {
     ) {
       this.setState({ animateNode: true });
     }
-    if (!prevProps.isWall && this.props.isWall && this.state.z === 0.25) {
+    if (!prevProps.isWall && this.props.isWall && this.state.z === 1) {
       this.setState({ animateWall: true, z: 0 });
     }
   }
@@ -24,7 +24,7 @@ class Node extends React.Component {
     // isWall: this.props.isWall,
     animateNode: false,
     animateWall: false,
-    z: 0.25,
+    z: 1,
   };
   // This reference gives us direct access to the THREE.Mesh object
   // this.ref = useRef();
@@ -36,10 +36,7 @@ class Node extends React.Component {
   handleChange = (result) => {
     // console.log(result.finished);
     if (result.value) {
-      if (
-        result.value.color === "lightblue" ||
-        result.value.color === "yellow"
-      ) {
+      if (result.value.color === "#6be3e3" || result.value.color === "yellow") {
         this.setState({ animateNode: false });
       }
     }
@@ -48,7 +45,7 @@ class Node extends React.Component {
   handleChangeWall = (result) => {
     // console.log(result);
     this.setState({ z: result.value.z });
-    if (result.value.z === 0.25) {
+    if (result.value.z === 1) {
       this.setState({ animateWall: false });
     }
   };
@@ -59,11 +56,11 @@ class Node extends React.Component {
       : this.props.isEnd
       ? "blue"
       : this.props.isWall
-      ? "black"
+      ? "white"
       : this.props.partofPath
       ? "yellow"
       : this.props.isVisited
-      ? "lightblue"
+      ? "#6be3e3"
       : "grey";
   };
 
@@ -82,14 +79,16 @@ class Node extends React.Component {
         ) : this.state.animateWall ? (
           <Spring
             from={{ z: 0 }}
-            to={{ z: 0.25 }}
+            to={{ z: 1 }}
             config={{ duration: 500 }}
             onChange={(result) => this.handleChangeWall(result)}
           >
-            {(styles) => <animated.boxGeometry args={[1, 1, this.state.z]} />}
+            {(styles) => (
+              <animated.boxGeometry args={[1.05, 1.05, this.state.z]} />
+            )}
           </Spring>
         ) : (
-          <boxGeometry args={[1, 1, 0.25]} />
+          <boxGeometry args={[1.05, 1.05, 1]} />
         )}
 
         {this.state.animateNode && !this.props.isEnd && !this.props.isStart ? (
@@ -112,12 +111,24 @@ class Node extends React.Component {
                 //     ? "white"
                 //     : "orange"
                 // }
+                emissive={this.determineColor()}
+                emissiveIntensity={this.determineColor() === "grey" ? 0 : 0.3}
+                transparent={true}
+                opacity={this.determineColor() === "grey" ? 0.2 : 1}
                 color={styles["color"]}
               />
             )}
           </Spring>
+        ) : this.props.isWall ? (
+          <meshPhysicalMaterial
+            transparent={true}
+            opacity={0.8}
+            color={this.determineColor()}
+          />
         ) : (
-          <meshStandardMaterial
+          <meshLambertMaterial
+            emissive={this.determineColor()}
+            emissiveIntensity={this.determineColor() === "grey" ? 0 : 0.3}
             transparent={true}
             opacity={this.determineColor() === "grey" ? 0.2 : 1}
             color={this.determineColor()}
