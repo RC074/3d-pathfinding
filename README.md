@@ -5,7 +5,8 @@
 ### 3d webgl app that demonstrates different types of pathfinding algorithms [in-progress]
 
 ## snapshot
-![image](https://user-images.githubusercontent.com/63427503/208349294-1e94675e-f8d2-4fa8-ac65-0aea5a2b6a81.png)
+![Screen Shot 2024-01-12 at 5 52 55 PM](https://github.com/RC074/3d-pathfinding/assets/63427503/0ed05eb2-7cef-44a7-89f3-4030b5204740)
+![Screen Shot 2024-01-12 at 5 53 36 PM](https://github.com/RC074/3d-pathfinding/assets/63427503/09575614-46ee-4752-a8fc-442dde0a8154)
 
 
 
